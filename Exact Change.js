@@ -32,21 +32,17 @@ function checkCashRegister(price, cash, cid) {
   }
  
   for (var i=8, count=1; i>=0; i--){
-    //check if amount left is greater than denomination and the denomination is in the register
-    if (Math.round(change *100)/100 >= denom[i].val && cid[i][1] > 0) {
-      if(count>1) {
-        cashback.pop();
-        cashback.push([denom[i].name, denom[i].val * count]);
-      }else {
-        cashback.push([denom[i].name, denom[i].val]);
-      }
+    var pushVal = 0;
+    //while amount left is greater than denomination and the denomination is in the register
+    while (change >= denom[i].val && cid[i][1] > 0) {
+      pushVal += denom[i].val;
       cid[i][1] -= denom[i].val;
       change -= denom[i].val;
-      count++;
-      i++;
-      continue;
+      change = Math.round(change*100)/100;
     }
-    count=1;
+    if (pushVal > 0) {
+      cashback.push([denom[i].name, pushVal]);
+    }
   }
   return cashback;
 }
