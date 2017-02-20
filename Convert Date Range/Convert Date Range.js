@@ -1,4 +1,5 @@
 function makeFriendlyDates(arr) {
+  //break down the componenets of the array
   var regexDate1 = /(\d{4})-(\d{2})-(\d{2})/.exec(arr[0]),
       regexDate2 = /(\d{4})-(\d{2})-(\d{2})/.exec(arr[1]),
       year1 = regexDate1[1],
@@ -7,8 +8,7 @@ function makeFriendlyDates(arr) {
       month2 = returnMonth(regexDate2[2]),
       day1 = returnDay(parseInt(regexDate1[3])),
       day2 = returnDay(parseInt(regexDate2[3])),
-      returnArray1,
-      returnArray2;
+      constantYear = 2016;
   
   function returnMonth(month){
     switch(month) {
@@ -64,10 +64,20 @@ function makeFriendlyDates(arr) {
   10th 20th 30th
   */
   
+  //if the dates are the same, return just one date
+  if (regexDate1[0] === regexDate2[0]) return [month1 + " " + day1 + ", " + year1];
+  //makeFriendlyDates(["2016-12-01", "2017-02-03"]) should return ["December 1st","February 3rd"]
+  else if(year1 == constantYear && year1 == year2 && month1 === month2) return [month1 + " " + day1, day2];
+  //makeFriendlyDates(["2016-12-01", "2017-02-03"]) should return ["December 1st","February 3rd"]
+  else if(year1 == constantYear && year2 == constantYear + 1) return [month1 + " " + day1, month2 + " " + day2];
+  //makeFriendlyDates(["2017-03-01", "2017-05-05"]) should return ["March 1st, 2017","May 5th"]
+  else if(year1 == year2 && year1 > constantYear) return [month1 + " " + day1 + ", " + year1, month2 + " " + day2];
+  //makeFriendlyDates(["2022-09-05", "2023-09-04"]) should return ["September 5th, 2022","September 4th"]
+  else if(year1 == year2 - 1 && month1 >= month2 && day1 > day2) return [month1 + " " + day1 + ", " + year1, month2 + " " + day2];
+  else return [month1 + " " + day1 + ", " + year1, month2 + " " + day2 + ", " + year2];
+  //return year1;
 
-  returnArray1 = month1 + " " + day1 + (year1===year2 ? ", " + year1 : "");
-  returnArray2 = month2 + " " + day2 + (year1===year2 ? "" : ", " + year2);
-  return [returnArray1, returnArray2];
 }
 
-makeFriendlyDates(["2017-03-01", "2017-05-05"]);
+makeFriendlyDates(["2016-07-01", "2016-07-04"]);
+
